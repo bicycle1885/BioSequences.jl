@@ -87,7 +87,7 @@ Base.convert{A<:RNAAlphabet}(::Type{RNAKmer}, seq::BioSequence{A}) = convert(RNA
 function make_kmer{T,K}(::Type{Kmer{T,K}}, seq)
     seqlen = length(seq)
     if seqlen > 32
-        throw(ArgumentError("cannot create a k-mer loger than 32nt"))
+        throw(ArgumentError("cannot create a k-mer longer than 32nt"))
     elseif seqlen != K
         throw(ArgumentError("cannot create a $(K)-mer from a sequence of length $(seqlen)"))
     end
