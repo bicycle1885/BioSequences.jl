@@ -105,6 +105,7 @@ export
     Kmer,
     DNAKmer,
     RNAKmer,
+    Codon,
     DNACodon,
     RNACodon,
     translate,

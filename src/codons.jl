@@ -28,9 +28,16 @@ Base.convert{T<:Number}(::Type{T}, cdn::Codon) = convert(T, UInt8(cdn))
 # Basic Functions
 # ---------------
 
+alphabet(::Type{DNACodon}) = (DNA_A, DNA_C, DNA_G, DNA_T)
+alphabet(::Type{RNACodon}) = (RNA_A, RNA_C, RNA_G, RNA_U)
 Base.length(cdn::Codon) = 3
 Base.eltype{T}(::Type{Codon{T}}) = T
 @inline function inbounds_getindex{T}(x::Codon{T}, i::Integer)
     return reinterpret(T, 0x01 << ((UInt8(x) >> (2 + 2(3 - i))) & 0b11))
 end
 Base.summary{T<:NucleicAcid}(x::Codon{T}) = string(T, " Codon")
+Base.:-{T<:NucleicAcid}(x::Codon{T}, y::Integer) = Codon{T}(UInt8(x) - y % UInt8)
+Base.:+{T<:NucleicAcid}(x::Codon{T}, y::Integer) = Codon{T}(UInt8(x) + y % UInt8)
+Base.:+{T<:NucleicAcid}(x::Integer, y::Codon{T}) = y + x
+Base.:(==){T<:NucleicAcid}(x::Codon{T}, y::Codon{T}) = UInt8(x) == UInt8(y)
+Base.isless{T<:NucleicAcid}(x::Codon{T}, y::Codon{T}) = isless(UInt8(x), UInt8(y))
